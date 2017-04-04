@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(edlib)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11")
+
 if(CMAKE_BUILD_TYPE MATCHES Debug)
   message("Debug mode")
   if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
@@ -17,7 +19,7 @@ include_directories(edlib/include)
 file(GLOB SOURCES "edlib/src/*.cpp")
 
 # Build binaries.
-add_executable(helloWorld apps/hello-world/helloWorld.c ${SOURCES})
+#add_executable(helloWorld apps/hello-world/helloWorld.c ${SOURCES})
 add_executable(runTests test/runTests.cpp ${SOURCES})
 if (NOT WIN32) # If on windows, do not build binaries that do not support windows.
   add_executable(edlib-aligner apps/aligner/aligner.cpp ${SOURCES})
