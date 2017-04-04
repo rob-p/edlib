@@ -9,8 +9,8 @@
 using namespace std;
 
 
-bool runRandomTests(int numTests, EdlibAlignMode mode, bool findAlignment);
-bool runRandomTestsAlignerEngine(int numTests, EdlibAlignMode mode, bool findAlignment);
+bool runRandomTests(int numTests, int rl, EdlibAlignMode mode, bool findAlignment);
+bool runRandomTestsAlignerEngine(int numTests, int rl, EdlibAlignMode mode, bool findAlignment);
 
 bool runTests();
 
@@ -35,8 +35,12 @@ int main(int argc, char* argv[]) {
     // This program has optional first parameter, which is number of random tests to run
     // per each algorithm. Default is 100.
     int numRandomTests = 100;
+    int rl = 200;
     if (argc > 1) {
         numRandomTests = (int) strtol(argv[1], NULL, 10);
+        if (argc > 2) {
+          rl = (int) strtol(argv[2], NULL, 10);
+        }
     }
 
     srand(42);
@@ -57,15 +61,15 @@ int main(int argc, char* argv[]) {
     */
 
     printf("Testing NW...\n");
-    allTestsPassed &= runRandomTests(numRandomTests, EDLIB_MODE_NW, false);
+    allTestsPassed &= runRandomTests(numRandomTests, rl, EDLIB_MODE_NW, false);
     printf("\n");
 
     printf("Testing NW (AlignerEngine)...\n");
-    allTestsPassed &= runRandomTestsAlignerEngine(numRandomTests, EDLIB_MODE_NW, false);
+    allTestsPassed &= runRandomTestsAlignerEngine(numRandomTests, rl, EDLIB_MODE_NW, false);
     printf("\n");
 
     printf("Testing NW (2)...\n");
-    allTestsPassed &= runRandomTests(numRandomTests, EDLIB_MODE_NW, false);
+    allTestsPassed &= runRandomTests(numRandomTests, rl, EDLIB_MODE_NW, false);
     printf("\n");
 
     /*
@@ -101,7 +105,7 @@ void fillRandomly(char* seq, int seqLength, int alphabetLength) {
     seq[i] = rand() % alphabetLength;
 }
 
-bool runRandomTestsAlignerEngine(int numTests, EdlibAlignMode mode, bool findAlignment) {
+bool runRandomTestsAlignerEngine(int numTests, int rl, EdlibAlignMode mode, bool findAlignment) {
     int alphabetLength = 4;
     int numTestsFailed = 0;
     clock_t start;
@@ -112,8 +116,8 @@ bool runRandomTestsAlignerEngine(int numTests, EdlibAlignMode mode, bool findAli
 
     for (int i = 0; i < numTests; i++) {
         bool failed = false;
-        int queryLength = 100 + rand() % 20;
-        int targetLength = 100 + rand() % 40;
+        int queryLength = rl + rand() % 20;
+        int targetLength = rl + rand() % 40;
         char* query = (char *) malloc(sizeof(char) * queryLength);
         char* target = (char *) malloc(sizeof(char) * targetLength);
         fillRandomlyDNA(query, queryLength, alphabetLength);
@@ -233,7 +237,7 @@ bool runRandomTestsAlignerEngine(int numTests, EdlibAlignMode mode, bool findAli
 }
 
 // Returns true if all tests passed, false otherwise.
-bool runRandomTests(int numTests, EdlibAlignMode mode, bool findAlignment) {
+bool runRandomTests(int numTests, int rl, EdlibAlignMode mode, bool findAlignment) {
     int alphabetLength = 4;
     int numTestsFailed = 0;
     clock_t start;
@@ -242,8 +246,8 @@ bool runRandomTests(int numTests, EdlibAlignMode mode, bool findAlignment) {
 
     for (int i = 0; i < numTests; i++) {
         bool failed = false;
-        int queryLength = 100 + rand() % 20;
-        int targetLength = 100 + rand() % 40;
+        int queryLength = rl + rand() % 20;
+        int targetLength = rl + rand() % 40;
         char* query = (char *) malloc(sizeof(char) * queryLength);
         char* target = (char *) malloc(sizeof(char) * targetLength);
         fillRandomlyDNA(query, queryLength, alphabetLength);
